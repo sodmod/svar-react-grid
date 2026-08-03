@@ -1,3 +1,19 @@
+## 2.7.3
+
+### Updates
+
+- Ability to use native HTML5 drag-n-drop with grid rows
+
+### Fixes
+
+- Inconsistent focus behavior and redundant "update-cell" event on inline editors
+
+## 2.7.2
+
+### Fixes
+
+- Incorrect dependencies
+
 ## 2.7.1
 
 ### Fixes

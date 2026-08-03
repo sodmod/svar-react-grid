@@ -3,6 +3,8 @@ import storeContext from '../../context';
 import { useStore } from '@svar-ui/lib-react';
 import { getStyle } from '../../helpers/columnWidth';
 import { editors } from './editors';
+import { getValue } from '@svar-ui/grid-store';
+import { isSame } from '@svar-ui/lib-state';
 import './Editor.css';
 
 export default function Editor({ column, row }) {
@@ -22,19 +24,28 @@ export default function Editor({ column, row }) {
     [api],
   );
 
-  const save = useCallback(
-    (ignoreFocus) => {
-      const cell = ignoreFocus
-        ? null
-        : { row: editor?.id, column: editor?.column };
-      closeEditor(false, cell);
-    },
-    [editor, closeEditor],
+  const getCell = useCallback(
+    (ignoreFocus) =>
+      ignoreFocus ? null : { row: editor?.id, column: editor?.column },
+    [editor],
   );
 
-  const cancel = useCallback(() => {
-    closeEditor(true, { row: editor?.id, column: editor?.column });
-  }, [editor, closeEditor]);
+  const save = useCallback(
+    (ignoreFocus) => {
+      const cell = getCell(ignoreFocus);
+      const isSameValue = isSame(getValue(row, column), editor?.value);
+      closeEditor(isSameValue, cell);
+    },
+    [editor, row, column, getCell, closeEditor],
+  );
+
+  const cancel = useCallback(
+    (ignoreFocus) => {
+      const cell = getCell(ignoreFocus);
+      closeEditor(true, cell);
+    },
+    [getCell, closeEditor],
+  );
 
   const updateValue = useCallback(
     (value) => {

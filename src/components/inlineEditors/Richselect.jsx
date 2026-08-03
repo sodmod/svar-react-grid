@@ -82,7 +82,7 @@ export default function Richselect(props) {
           <span className="wx-ywGRk611 wx-text">{editor.renderedValue}</span>
         )}
       </div>
-      <SuggestDropdown items={options} onReady={ready} onSelect={updateValue} {...dropdownOptions} onCancel={onCancel}>
+      <SuggestDropdown items={options} onReady={ready} onSelect={updateValue} {...dropdownOptions}>
         {({ option }) =>
           config.template
             ? config.template(option)

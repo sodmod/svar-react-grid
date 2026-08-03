@@ -88,6 +88,7 @@ export declare const Grid: ForwardRefExoticComponent<
     header?: boolean;
     footer?: boolean;
     reorder?: boolean;
+    draggableRows?: boolean | ((row: IRow) => boolean);
     autoRowHeight?: boolean;
     responsive?: {
       [key: string]: {

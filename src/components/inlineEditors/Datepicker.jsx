@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Calendar, Dropdown } from '@svar-ui/react-core';
-import { clickOutside } from '@svar-ui/lib-dom';
 import './Datepicker.css';
 
 export default function Datepicker({ editor, onAction, onSave, onApply, onCancel }) {
@@ -18,7 +17,6 @@ export default function Datepicker({ editor, onAction, onSave, onApply, onCancel
   }
 
   const nodeRef = useRef(null);
-  const [calendarContainer, setCalendarContainer] = useState(null);
 
   useEffect(() => {
     if (nodeRef.current) {
@@ -28,12 +26,6 @@ export default function Datepicker({ editor, onAction, onSave, onApply, onCancel
       window.getSelection().removeAllRanges();
     }
   }, []);
-
-  useEffect(() => {
-    if (!calendarContainer) return;
-    const cleanup = clickOutside(calendarContainer, () => onSave(true));
-    return () => cleanup.destroy();
-  }, [calendarContainer, onSave]);
 
   return (
     <>
@@ -55,14 +47,12 @@ export default function Datepicker({ editor, onAction, onSave, onApply, onCancel
           <span className="wx-lNWNYUb6 wx-text">{editor.renderedValue}</span>
         )}
       </div>
-      <Dropdown {...dropdownOptions} onCancel={onCancel}>
-        <div ref={setCalendarContainer} className="wx-lNWNYUb6">
-          <Calendar
-            value={value}
-            onChange={updateValue}
-            buttons={editor.config?.buttons}
-          />
-        </div>
+      <Dropdown {...dropdownOptions} onCancel={() => onCancel(true)}>
+        <Calendar
+          value={value}
+          onChange={updateValue}
+          buttons={editor.config?.buttons}
+        />
       </Dropdown>
     </>
   );

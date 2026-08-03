@@ -28,7 +28,8 @@ function Layout(props) {
     footer,
     overlay,
     multiselect,
-    onreorder: onReorder,
+    onReorder,
+    draggableRows,
     rowStyle,
     columnStyle,
     cellStyle,
@@ -75,6 +76,13 @@ function Layout(props) {
   const defaultRowHeight = useMemo(() => sizes?.rowHeight || 0, [sizes]);
 
   const tableNodeRef = useRef(null);
+
+  // draggableRows: boolean for all rows, or a (row) => boolean predicate
+  const isRowDraggable = useCallback(
+    (row) =>
+      typeof draggableRows === 'function' ? draggableRows(row) : draggableRows,
+    [draggableRows],
+  );
 
   // reorder
   const [dragItem, setDragItem] = useState(null);
@@ -935,6 +943,7 @@ function Layout(props) {
                       className={'wx-4VuBwK2D ' + rowClass}
                       data-id={setID(row.id)}
                       data-context-id={setID(row.id)}
+                      draggable={isRowDraggable(row) ? true : undefined}
                       style={rowStyleProp}
                       role="row"
                       aria-rowindex={rIndex}

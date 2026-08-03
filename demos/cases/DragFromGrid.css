@@ -1,0 +1,75 @@
+.demo.wx-aacXcaXF {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  height: 440px;
+  box-sizing: border-box;
+}
+
+.grid-box.wx-aacXcaXF {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* hint that rows can be grabbed */
+.grid-box.wx-aacXcaXF .wx-row {
+  cursor: grab;
+}
+
+.drop-box.wx-aacXcaXF {
+  width: 260px;
+  flex: 0 0 auto;
+  border: 2px dashed var(--wx-color-font-alt);
+  border-radius: 8px;
+  padding: 12px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--wx-background-alt);
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+
+.drop-box.active.wx-aacXcaXF {
+  border-color: var(--wx-color-primary);
+  background: var(--wx-color-secondary-hover);
+}
+
+.drop-box.wx-aacXcaXF h4 {
+  margin: 0;
+}
+
+.empty.wx-aacXcaXF {
+  margin: 0;
+  font-size: 13px;
+  color: var(--wx-color-font-alt);
+}
+
+.card.wx-aacXcaXF {
+  border: var(--wx-border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: var(--wx-background);
+  color: var(--wx-color-font);
+  box-shadow: var(--wx-shadow-light);
+}
+
+.card-name.wx-aacXcaXF {
+  font-weight: 600;
+}
+
+.card-meta.wx-aacXcaXF {
+  display: flex;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--wx-color-font-alt);
+  margin-top: 2px;
+}
+
+.card-email.wx-aacXcaXF {
+  font-size: 12px;
+  color: var(--wx-color-font-alt);
+  margin-top: 2px;
+}

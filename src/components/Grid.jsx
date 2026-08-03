@@ -48,6 +48,7 @@ const Grid = forwardRef(function Grid(
     dynamic = null,
     overlay = null,
     reorder = false,
+    draggableRows = false,
     onReorder = null,
     autoRowHeight = false,
     sizes,
@@ -243,6 +244,7 @@ const Grid = forwardRef(function Grid(
           columnStyle={columnStyle}
           cellStyle={cellStyle}
           onReorder={onReorder}
+          draggableRows={draggableRows}
           multiselect={multiselect}
           autoRowHeight={autoRowHeight}
           clientWidth={clientWidth}

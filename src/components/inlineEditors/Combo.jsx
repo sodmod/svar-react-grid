@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { SuggestDropdown } from '@svar-ui/react-core';
-import { clickOutside } from '@svar-ui/lib-dom';
 import './Combo.css';
 
 function Combo({ editor, onAction, onSave, onApply, onCancel }) {
@@ -53,17 +52,6 @@ function Combo({ editor, onAction, onSave, onApply, onCancel }) {
     }
   }, []);
 
-  const onSaveRef = useRef(onSave);
-  useEffect(() => {
-    onSaveRef.current = onSave;
-  }, [onSave]);
-
-  useEffect(() => {
-    if (!inputRef.current) return;
-    const cleanup = clickOutside(inputRef.current, () => onSaveRef.current(true));
-    return () => cleanup.destroy();
-  }, []);
-
   useEffect(() => {
     setValue(editor?.value);
     setText(editor?.renderedValue);
@@ -94,7 +82,7 @@ function Combo({ editor, onAction, onSave, onApply, onCancel }) {
         onReady={ready}
         onSelect={updateValue}
         {...dropdownOptions}
-        onCancel={onCancel}
+        onCancel={() => onCancel(true)}
       >
         {({ option }) => {
           if (template) {

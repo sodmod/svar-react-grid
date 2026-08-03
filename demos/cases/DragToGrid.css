@@ -1,0 +1,61 @@
+.demo.wx-aacaEdXY {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  height: 440px;
+  box-sizing: border-box;
+}
+.cards.wx-aacaEdXY {
+  width: 240px;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: auto;
+}
+.cards.wx-aacaEdXY h4 {
+  margin: 0;
+}
+.hint.wx-aacaEdXY {
+  margin: 0 0 4px;
+  font-size: 13px;
+  color: var(--wx-color-font-alt);
+}
+.card.wx-aacaEdXY {
+  border: var(--wx-border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: var(--wx-background);
+  color: var(--wx-color-font);
+  cursor: grab;
+  box-shadow: var(--wx-shadow-light);
+  user-select: none;
+}
+.card.wx-aacaEdXY:active {
+  cursor: grabbing;
+}
+.card-name.wx-aacaEdXY {
+  font-weight: 600;
+}
+.card-meta.wx-aacaEdXY {
+  display: flex;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--wx-color-font-alt);
+  margin-top: 2px;
+}
+.card-email.wx-aacaEdXY {
+  font-size: 12px;
+  color: var(--wx-color-font-alt);
+  margin-top: 2px;
+}
+.grid-box.wx-aacaEdXY {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* class lands on grid-owned .wx-row, so target it globally */
+.wx-row.wx-drop-target {
+  background: var(--wx-color-secondary-hover);
+  box-shadow: inset 0 0 0 2px var(--wx-color-primary);
+}

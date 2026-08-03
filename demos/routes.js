@@ -6,6 +6,8 @@ import ContextMenu from './cases/ContextMenu.jsx';
 import CustomCells from './cases/CustomCells.jsx';
 import CustomContextMenu from './cases/CustomContextMenu.jsx';
 import CustomEmbedingActions from './cases/CustomEmbedingActions.jsx';
+import DragFromGrid from './cases/DragFromGrid.jsx';
+import DragToGrid from './cases/DragToGrid.jsx';
 import DynamicData from './cases/DynamicData.jsx';
 import EventHandling from './cases/EventHandling.jsx';
 import ExternalEditor from './cases/ExternalEditor.jsx';
@@ -158,6 +160,18 @@ export const links = [
   ],
   ['/multiline-row/:skin', 'Auto row heights', MultilineRows, 'MultilineRows'],
   ['/reordering/:skin', 'Reordering rows', Reordering, 'Reordering'],
+  [
+    '/drag-to-grid/:skin',
+    'Creating rows from drag-n-drop',
+    DragToGrid,
+    'DragToGrid',
+  ],
+  [
+    '/drag-from-grid/:skin',
+    'Dragging rows outside DataGrid',
+    DragFromGrid,
+    'DragFromGrid',
+  ],
   ['/treetable/:skin', 'Tree rows', TreeTable, 'TreeTable'],
 
   { group: 'Data operations' },
