@@ -1,3 +1,9 @@
+> **Project-owned fork.** This is not the upstream SVAR project. It is a fork of
+> [svar-widgets/react-grid](https://github.com/svar-widgets/react-grid) maintained by the
+> SVAR Production Planner project. Upstream code is (c) XB Software Sp. z o.o, MIT
+> (`license.txt`). See [PLANNER_FORK.md](./PLANNER_FORK.md) for the exact upstream
+> tag this branches from and for everything this project changed.
+
 <div align="center">
 	
 # SVAR React DataGrid | Data Table
