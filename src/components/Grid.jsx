@@ -1,7 +1,7 @@
 import {
   useState,
   useMemo,
-  useEffect,
+  useLayoutEffect,
   useRef,
   useCallback,
   useContext,
@@ -164,7 +164,23 @@ const Grid = forwardRef(function Grid(
   const _skin = useContext(context.theme);
 
   const initOnceRef = useRef(0);
-  useEffect(() => {
+  // SVAR-M1 (SVAR Production Planner): useEffect -> useLayoutEffect.
+  //
+  // WHAT CHANGES: WHEN this already-computed value is published, never WHAT is
+  // computed. The grid's vertical POSITION and the grid's ROW CONTENT are owned
+  // by two packages and used to land in two different React commits:
+  // @svar-ui/react-gantt writes --wx-body-offset (= area.from - scrollTop) into
+  // an inline style DURING RENDER, i.e. before paint, while this effect copied
+  // the `data` prop into the grid's own DataStore PASSIVELY, i.e. after paint.
+  // So when the virtual row window advanced by one row, the offset moved on
+  // commit N and the rows followed on commit N+1, and a frame painted in
+  // between showed every row exactly one cellHeight away from its own bar.
+  //
+  // Publishing from the layout phase makes React flush the resulting re-render
+  // before the browser paints, so offset and rows are always in the same painted
+  // frame. No value in this effect's own dependency list is written by it, so no
+  // loop is introduced.
+  useLayoutEffect(() => {
     if (!initOnceRef.current) {
       if (init) init(api);
     } else {
