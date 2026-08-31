@@ -72,6 +72,10 @@ const OWNED_UPSTREAM_FILES = {
     'says in its first lines that this is a project-owned fork (MIT attribution)',
   'src/components/Grid.jsx':
     'SVAR-M1 — the phase in which the `data` prop reaches the DataStore',
+  'vite.config.js':
+    'sourcemapPathTransform makes dist/index.es.js.map deterministic across ' +
+    'install roots (an ephemeral npm git-clone temp path was leaking into ' +
+    '`sources`) — no runtime behaviour changes',
 };
 
 /** Path prefixes of files this project ADDED (they have no upstream version). */
