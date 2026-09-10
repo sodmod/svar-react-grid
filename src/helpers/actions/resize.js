@@ -110,8 +110,23 @@ export function resize(node, config) {
 
   node.addEventListener('mousedown', down);
 
+  /*
+   * Removing the way IN, and deliberately not touching a gesture that is
+   * already running.
+   *
+   * MEASURED, and the reason this is not `stop()`: the caller re-subscribes
+   * whenever the column's width changes, and a width changes on every accepted
+   * step of a resize — so a disposer that ended the gesture ended it on its own
+   * first step. (That is precisely why the broken `typeof cleanup === 'function'`
+   * check hid this for so long: nothing was ever disposed, so nothing could.)
+   *
+   * A gesture in flight keeps its own listeners, and they are on `window`, not
+   * on this node — so it still ends on the release, the cancel, the blur or the
+   * page being hidden even if the grip itself has gone away in the meantime.
+   * The teardown those paths run is the same `stop()`, so the document is
+   * restored either way.
+   */
   function destroy() {
-    stop();
     node.removeEventListener('mousedown', down);
   }
 
