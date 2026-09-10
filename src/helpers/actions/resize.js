@@ -33,6 +33,10 @@
  * treats it as a function is right too.
  */
 export function resize(node, config) {
+  // SVAR-M21: every path out of the gesture goes through `stop()`, which is
+  // what makes "the document never keeps the resize cursor" true by
+  // construction rather than by remembering to repeat the teardown.
+
   let x,
     dx,
     active = false;
@@ -91,7 +95,7 @@ export function resize(node, config) {
   }
 
   /*
-   * A gesture the browser took away is NOT a resize to somewhere. The width the
+   * SVAR-M21: a gesture the browser took away is NOT a resize to somewhere. The width the
    * consumer already saw through the in-progress steps is the width it keeps —
    * this path restores the document and reports nothing, rather than inventing
    * a final position from a pointer that is no longer there.
