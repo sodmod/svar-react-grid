@@ -72,6 +72,13 @@ const OWNED_UPSTREAM_FILES = {
     'says in its first lines that this is a project-owned fork (MIT attribution)',
   'src/components/Grid.jsx':
     'SVAR-M1 — the phase in which the `data` prop reaches the DataStore',
+  'src/components/HeaderCell.jsx':
+    'SVAR-M21 — the resize action\'s disposer is really called, so a grip does ' +
+    'not accumulate a mousedown listener per width change',
+  'src/helpers/actions/resize.js':
+    'SVAR-M21 — the column-resize gesture always terminates: pointercancel, a ' +
+    'lost window focus, a hidden page and a lost pointer capture end it exactly ' +
+    'like mouseup, so the document never keeps the resize cursor',
   'vite.config.js':
     'sourcemapPathTransform makes dist/index.es.js.map deterministic across ' +
     'install roots (an ephemeral npm git-clone temp path was leaking into ' +

@@ -63,7 +63,11 @@ export default function HeaderCell(props) {
       if (order) {
         order = order === 'asc' ? 'desc' : 'asc';
       }
-      api.exec('sort-rows', { key: cell.id, add: ev.ctrlKey || ev.metaKey, order });
+      api.exec('sort-rows', {
+        key: cell.id,
+        add: ev.ctrlKey || ev.metaKey,
+        order,
+      });
     },
     [api, cell.id, cell.filter, column.sort, sortMark?.order],
   );
@@ -211,8 +215,21 @@ export default function HeaderCell(props) {
     const node = gripRef.current;
     if (!node) return;
     const cleanup = resize(node, { down, move, up });
+    /*
+     * SVAR-M21 (SVAR Production Planner): the cleanup really runs.
+     *
+     * `resize()` returns a disposer; this checked `typeof cleanup ===
+     * 'function'` against a value that was an object, so the branch was never
+     * taken and the grip's `mousedown` listener was never removed. These
+     * callbacks change identity whenever the column's width changes, and a
+     * width changes on every step of a resize, so the effect re-ran and added
+     * another listener each step — 11 of them during one measured drag.
+     */
     return () => {
       if (typeof cleanup === 'function') cleanup();
+      else if (cleanup && typeof cleanup.destroy === 'function') {
+        cleanup.destroy();
+      }
     };
   }, [down, move, up, resize]);
 
