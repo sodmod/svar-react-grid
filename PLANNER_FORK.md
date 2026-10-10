@@ -74,8 +74,31 @@ Two kinds of change, deliberately kept in separate commits:
    package, because a git dependency has no publish step),
    `tools/planner-verify.mjs` (fork-local provenance and boundary checks), and
    this file. No renderer behaviour.
-2. **Renderer behaviour** — currently exactly one change, `SVAR-M1`, in
-   `src/components/Grid.jsx`: the phase in which the \`data\` prop is published into the grid's own DataStore.
+2. **Renderer behaviour** — `SVAR-M1`, in `src/components/Grid.jsx`: the
+   phase in which the \`data\` prop is published into the grid's own
+   DataStore; `SVAR-M21`, in `src/helpers/actions/resize.js` and
+   `src/components/HeaderCell.jsx`: a column resize always terminates; and
+   `SVAR-M59`, in `src/components/Cell.jsx` and `src/components/Layout.jsx`:
+   a row that stays in the window skips a window shift.
+
+   `SVAR-M59`. Upstream re-rendered every cell of every visible row on every
+   render of `Layout.jsx`, and `Layout.jsx` on every render of `Grid.jsx`.
+   For the consuming Gantt every new row window is new `data`: `Grid.jsx`
+   rendered (and with it the whole body, with the OLD rows), then its layout
+   effect handed the rows to the store and the body rendered again, all
+   cells, although one row entered and one left. The store never changes a
+   row in place (`update-row` and `toggleBranch` make a new object), and
+   react-gantt now keeps the object of an unchanged row across a window shift
+   (`SVAR-M58` in `sodmod/svar-react-gantt`). So `Cell` is memoised on its
+   props and skips a window shift when its row is the same object, and
+   `Layout` is memoised on its props, so the render through `Grid.jsx` no
+   longer redraws the old rows; it renders on its own store subscriptions as
+   before. `Layout` hands each cell an `epoch` that is new on every render
+   caused by anything but the rows of the window (`flatData`, `scrollTop`),
+   so outside a pure window shift every cell renders exactly as upstream.
+   `@svar-ui/grid-store` is not changed. Measured and guarded in the
+   consuming application (`e2e/clean-pan-plan-microstutter-r2.spec.ts`
+   there).
 
 ## Community / PRO boundary
 

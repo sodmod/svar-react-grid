@@ -72,6 +72,15 @@ const OWNED_UPSTREAM_FILES = {
     'says in its first lines that this is a project-owned fork (MIT attribution)',
   'src/components/Grid.jsx':
     'SVAR-M1 — the phase in which the `data` prop reaches the DataStore',
+  'src/components/Cell.jsx':
+    'SVAR-M59 — the cell is memoised on its props, so a row that stays in the ' +
+    'window (the same row object) skips a window shift; `epoch` reopens it on ' +
+    'every render of Layout.jsx not caused by the rows of the window alone',
+  'src/components/Layout.jsx':
+    'SVAR-M59 — the layout is memoised on its props, so a render of Grid.jsx ' +
+    'for new data no longer redraws the old rows before its own store ' +
+    'subscription brings the new ones, and it hands each cell the epoch that ' +
+    'changes on every render not caused by the rows of the window alone',
   'src/components/HeaderCell.jsx':
     'SVAR-M21 — the resize action\'s disposer is really called, so a grip does ' +
     'not accumulate a mousedown listener per width change',

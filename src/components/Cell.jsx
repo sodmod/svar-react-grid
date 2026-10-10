@@ -1,4 +1,11 @@
-import { useEffect, useMemo, useRef, useContext, useCallback } from 'react';
+import {
+  memo,
+  useEffect,
+  useMemo,
+  useRef,
+  useContext,
+  useCallback,
+} from 'react';
 import storeContext from '../context';
 import { useStore } from '@svar-ui/lib-react';
 import { getStyle } from '../helpers/columnWidth';
@@ -6,7 +13,7 @@ import { getRenderValue } from '@svar-ui/grid-store';
 import { setID } from '@svar-ui/lib-dom';
 import './Cell.css';
 
-export default function Cell(props) {
+function Cell(props) {
   const {
     row,
     column,
@@ -169,3 +176,24 @@ export default function Cell(props) {
     </div>
   );
 }
+
+/*
+ * SVAR-M59 (SVAR Production Planner): memoised on its props.
+ *
+ * Upstream re-rendered every cell of every visible row on every render of
+ * `Layout.jsx`. The renders that matter for this are a moved row window — the
+ * Gantt's vertical Pan, a wheel step, a reveal, or this grid's own scroll —
+ * where most rows are the very same row objects as before (the store never
+ * changes a row in place: `update-row` and `toggleBranch` make a new object,
+ * and react-gantt keeps the copy of an unchanged row across a window shift,
+ * SVAR-M58). A cell now skips such a render when its row, its column and its
+ * other props are the same values.
+ *
+ * `epoch` is one of those props: `Layout.jsx` makes a new one on every render
+ * caused by anything other than the rows of the window (a selection, focus,
+ * the editor, sizes, columns, any prop of the grid), so outside a pure window
+ * shift every cell renders exactly as upstream. A cell keeps its own store
+ * subscriptions (`focusCell`, `search`, `reorder`), which a memo boundary does
+ * not block.
+ */
+export default memo(Cell);

@@ -1,4 +1,5 @@
 import {
+  memo,
   useState,
   useEffect,
   useMemo,
@@ -59,6 +60,45 @@ function Layout(props) {
   const undoState = useStore(api, 'undo');
   const reorder = useStore(api, 'reorder');
   const rowHeightFromData = useStore(api, '_rowHeightFromData');
+
+  // SVAR-M59 (SVAR Production Planner): a new epoch on every render caused by
+  // anything but the rows of the window. `flatData` and `scrollTop` — the
+  // rows and this grid's own vertical scroll, i.e. a window shift — are the
+  // only inputs left out, so a memoised <Cell> skips a render only when the
+  // window alone moved and its own row is the same object as before.
+  const cellEpoch = useMemo(
+    () => ({}),
+    [
+      dynamic,
+      columns,
+      split,
+      sizes,
+      selectionChanged,
+      selectState,
+      editorState,
+      scrollLeft,
+      tree,
+      focusCell,
+      printConfig,
+      undoState,
+      reorder,
+      rowHeightFromData,
+      header,
+      footer,
+      overlay,
+      multiselect,
+      onReorder,
+      rowStyle,
+      columnStyle,
+      cellStyle,
+      autoRowHeight,
+      resize,
+      clientWidth,
+      clientHeight,
+      responsiveLevel,
+      hotkeysConfig,
+    ],
+  );
 
   // will be calculated once, after rendering
   const [SCROLLSIZE, setSCROLLSIZE] = useState(0);
@@ -971,6 +1011,7 @@ function Layout(props) {
                                 focus?.row === row.id &&
                                 focus?.column === column.id
                               }
+                              epoch={cellEpoch}
                             />
                           );
                         }
@@ -1007,4 +1048,15 @@ function Layout(props) {
   );
 }
 
-export default Layout;
+/*
+ * SVAR-M59 (SVAR Production Planner): memoised on its props. `Grid.jsx`
+ * renders whenever one of ITS props is a new value — for the Gantt that is
+ * every new row window, a new `data` — and its layout effect then hands the
+ * new rows to the store (SVAR-M1), which re-renders this component through
+ * its own `flatData` subscription before the browser paints. The render that
+ * reached it through `Grid.jsx` first drew the OLD rows again and was thrown
+ * away by the next commit. Every input of this component is a prop, a store
+ * subscription, its own state or a context, so a memo boundary on its props
+ * loses nothing: it renders on each of those exactly as before.
+ */
+export default memo(Layout);
